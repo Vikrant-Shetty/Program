@@ -1,0 +1,50 @@
+import tkinter
+import requests
+from bs4 import BeautifulSoup
+def repeat():
+    def Search():
+        x = itemE.get()
+        Sites = tkinter.Label(top, text="Sites")
+        Price = tkinter.Label(top, text="Price")
+        Sites.grid(row=4, column=1)
+        Price.grid(row=4, column=3)
+        req = requests.get("https://www.flipkart.com/search?q={}".format(x))
+        content = req.content
+        soup = BeautifulSoup(content, "html.parser")
+        element = soup.find("div", {"class": "_1vC4OE"}, True)
+        fT = tkinter.Label(top, text="Flipkart:")
+        fE = tkinter.Label(top, text=element.text.strip())
+        fT.grid(row=5, column=1)
+        fE.grid(row=5, column=3)
+        req2 = requests.get("https://www.snapdeal.com/search?keyword={}".format(x))
+        content2 = req2.content
+        soup2 = BeautifulSoup(content2, "html.parser")
+        element2 = soup2.find("span", {"class": "lfloat product-price"}, True)
+        sT = tkinter.Label(top, text="Snapdeal:")
+        sE = tkinter.Label(top, text=element2.text.strip())
+        sT.grid(row=6, column=1)
+        sE.grid(row=6, column=3)
+        req3 = requests.get("https://www.ebay.in/sch/i.html?_from=R40&_trksid=p2050601.m570.l1313.TR12.TRC2.A0.H0.XRedmi+note+4.TRS0&_nkw={}".format(x))
+        content3 = req3.content
+        soup3 = BeautifulSoup(content3, "html.parser")
+        element3 = soup3.find("span", {"class": "bold"}, True)
+        eT = tkinter.Label(top, text="Ebay:")
+        eE = tkinter.Label(top, text= element3.text.strip())
+        eT.grid(row=7, column=1)
+        eE.grid(row=7,column=3)
+        button = tkinter.Button(top, text="Repeat", command=repeat)
+        button.grid(row=8, column=2)
+
+    top = tkinter.Tk()
+    top.title("Dumb Things")
+    top.geometry("350x250")
+    itemT = tkinter.Label(top, text="Item name:")
+    itemE = tkinter.Entry(top)
+    itemT.grid(row=1, column=1)
+    itemE.grid(row=1, column=2)
+    label = tkinter.Label(top)
+    label.grid(row=2, column=2)
+    button = tkinter.Button(top, text="Search Price", command=Search)
+    button.grid(row=3, column=2)
+    top.mainloop()
+repeat()
